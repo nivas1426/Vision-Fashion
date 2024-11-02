@@ -199,7 +199,7 @@ function ProductList() {
             <div className="tag">
                <div className="luxury">
                <img src="https://img.freepik.com/free-vector/flat-design-clothing-store-logo-design_23-2149496415.jpg?t=st=1730543876~exp=1730547476~hmac=ce534e7d3703835d9821960037e5eefd109a33641a5f1aed37bfb6d9b5377c40&w=740" alt="" />
-               <a href="/" style={{textDecoration:'none'}}>
+               <a href="./" style={{textDecoration:'none'}}>
                     <div>
                         <h3 style={{color:'white'}}>Vision Fashion</h3>
                         <i style={{color:'white'}}>where style meets elegance!</i>
