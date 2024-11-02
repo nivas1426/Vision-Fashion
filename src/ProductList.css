@@ -168,10 +168,11 @@ body {
 }
 .cart_quantity_count{
     margin-top: 16px;
+    color:#000000;
     /* background-color: red; */
     margin-left: 27px;
     position: absolute;
-    font-size: 29px;
+    font-size: 24px;
 
 }
 .plantname_heading{
