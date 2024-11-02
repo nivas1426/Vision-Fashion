@@ -217,7 +217,7 @@ function ProductList() {
         <div className="product-grid">
         {clothingArray.map((category, index) => (
             <div key={index}>
-                <h1>{category.category}</h1>
+                <h1><div>{category.category}</div></h1>
                 <div className="product-list">
                     {category.items.map((item) => (
                         <div className="product-card" key={item.name}>
