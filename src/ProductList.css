@@ -7,12 +7,12 @@ body, h1, ul {
 /* Set a background color */
 body {
     font-family: Arial, sans-serif;
-    background-color: #f0f0f0;
+    background-color: #ded7d7;
 }
 
 /* Navbar */
 .navbar {
-    background-color: #4CAF50;
+    background-color: #d2b48c;
     color: #fff!important;
     padding: 15px;
     display: flex;
@@ -46,6 +46,7 @@ body {
     width: 100vw;
     align-items: center;
     justify-content: center;
+    margin: 70px;
 }
 .product-list {
     display: flex;
@@ -87,9 +88,10 @@ body {
 }
 
 .product-price {
-    color: #e74c3c;
-    font-size: 1.2rem;
+    color: #000000;
+    font-size: 1.5rem;
     margin-bottom: 10px;
+    margin-top:10px;
 }
 
 .product-image {
@@ -161,7 +163,7 @@ body {
     font-size: 19px;
 }
 .cart{
-    color: white;
+    color: '#556B2F';
     display: flex;
 }
 .cart_quantity_count{

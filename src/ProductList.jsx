@@ -1,219 +1,135 @@
 import React, { useState,useEffect } from 'react';
 import './ProductList.css'
 import CartItem from './CartItem';
+import { addItem } from './CartSlice';
+import { useDispatch, useSelector } from 'react-redux';
+
 function ProductList() {
     const [showCart, setShowCart] = useState(false); 
-    const [showPlants, setShowPlants] = useState(false); // State to control the visibility of the About Us page
-
-    const plantsArray = [
+    const [showClothes, setShowClothes] = useState(false); // State to control the visibility of the About Us page
+    const [addedToCart, setAddedToCart] = useState({});
+    const cartItems = useSelector((state) => state.cart.items);
+    const dispatch = useDispatch();
+    const clothingArray = [
         {
-            category: "Air Purifying Plants",
-            plants: [
+            category: "Casual Wear",
+            items: [
                 {
-                    name: "Snake Plant",
-                    image: "https://cdn.pixabay.com/photo/2021/01/22/06/04/snake-plant-5939187_1280.jpg",
-                    description: "Produces oxygen at night, improving air quality.",
+                    name: "Basic T-Shirt",
+                    image: "https://outoforder.in/wp-content/uploads/2020/03/mens-black-t-sirt.jpg",
+                    description: "Soft cotton tee, perfect for everyday wear.",
                     cost: "$15"
                 },
                 {
-                    name: "Spider Plant",
-                    image: "https://cdn.pixabay.com/photo/2018/07/11/06/47/chlorophytum-3530413_1280.jpg",
-                    description: "Filters formaldehyde and xylene from the air.",
-                    cost: "$12"
+                    name: "Denim Jeans",
+                    image: "https://rukminim2.flixcart.com/image/832/832/xif0q/jean/g/f/j/8-9-years-aw24bjp840-black-md-wash-lt-wash-kiddopanti-original-imah3j86zncez3vp.jpeg",
+                    description: "Classic blue denim, comfortable and durable.",
+                    cost: "$45"
                 },
                 {
-                    name: "Peace Lily",
-                    image: "https://cdn.pixabay.com/photo/2019/06/12/14/14/peace-lilies-4269365_1280.jpg",
-                    description: "Removes mold spores and purifies the air.",
-                    cost: "$18"
+                    name: "Casual Sneakers",
+                    image: "https://rukminim2.flixcart.com/image/416/416/xif0q/shoe/o/t/n/-original-imah4zh49dgaybb5.jpeg",
+                    description: "Versatile sneakers with a minimalist design.",
+                    cost: "$60"
                 },
                 {
-                    name: "Boston Fern",
-                    image: "https://cdn.pixabay.com/photo/2020/04/30/19/52/boston-fern-5114414_1280.jpg",
-                    description: "Adds humidity to the air and removes toxins.",
-                    cost: "$20"
-                },
-                {
-                    name: "Rubber Plant",
-                    image: "https://cdn.pixabay.com/photo/2020/02/15/11/49/flower-4850729_1280.jpg",
-                    description: "Easy to care for and effective at removing toxins.",
-                    cost: "$17"
-                },
-                {
-                    name: "Aloe Vera",
-                    image: "https://cdn.pixabay.com/photo/2018/04/02/07/42/leaf-3283175_1280.jpg",
-                    description: "Purifies the air and has healing properties for skin.",
-                    cost: "$14"
+                    name: "Hooded Sweatshirt",
+                    image: "https://rukminim2.flixcart.com/image/832/832/xif0q/sweatshirt/8/n/4/l-ts572-frenchcrown-original-imagh74yrgftfkhd.jpeg",
+                    description: "Warm and cozy hoodie for a laid-back look.",
+                    cost: "$35"
                 }
             ]
         },
         {
-            category: "Aromatic Fragrant Plants",
-            plants: [
+            category: "Formal Wear",
+            items: [
                 {
-                    name: "Lavender",
-                    image: "https://images.unsplash.com/photo-1611909023032-2d6b3134ecba?q=80&w=1074&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-                    description: "Calming scent, used in aromatherapy.",
-                    cost: "$20"
+                    name: "Blazer Jacket",
+                    image: "https://rukminim2.flixcart.com/image/832/832/xif0q/blazer/m/u/j/12-13-years-kids-party-wear-blazer-for-boys-seetoo-original-imagz7yzwuwb8z7q.jpeg",
+                    description: "Elegant blazer suitable for formal events.",
+                    cost: "$120"
                 },
                 {
-                    name: "Jasmine",
-                    image: "https://images.unsplash.com/photo-1592729645009-b96d1e63d14b?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-                    description: "Sweet fragrance, promotes relaxation.",
-                    cost: "$18"
+                    name: "Dress Pants",
+                    image: "https://image.hm.com/assets/hm/f1/d3/f1d3706245f9cfe53380b07d8d42f49a4a740f6a.jpg",
+                    description: "Tailored pants with a classic fit.",
+                    cost: "$55"
                 },
                 {
-                    name: "Rosemary",
-                    image: "https://cdn.pixabay.com/photo/2019/10/11/07/12/rosemary-4541241_1280.jpg",
-                    description: "Invigorating scent, often used in cooking.",
-                    cost: "$15"
+                    name: "Oxford Shirt",
+                    image: "https://rukminim2.flixcart.com/image/832/832/xif0q/shirt/3/5/5/xxl-004-givuil-original-imahfxhjwrg9ggrk.jpeg",
+                    description: "Crisp, button-down shirt for professional wear.",
+                    cost: "$40"
                 },
                 {
-                    name: "Mint",
-                    image: "https://cdn.pixabay.com/photo/2016/01/07/18/16/mint-1126282_1280.jpg",
-                    description: "Refreshing aroma, used in teas and cooking.",
-                    cost: "$12"
-                },
-                {
-                    name: "Lemon Balm",
-                    image: "https://cdn.pixabay.com/photo/2019/09/16/07/41/balm-4480134_1280.jpg",
-                    description: "Citrusy scent, relieves stress and promotes sleep.",
-                    cost: "$14"
-                },
-                {
-                    name: "Hyacinth",
-                    image: "https://cdn.pixabay.com/photo/2019/04/07/20/20/hyacinth-4110726_1280.jpg",
-                    description: "Hyacinth is a beautiful flowering plant known for its fragrant.",
-                    cost: "$22"
+                    name: "Silk Tie",
+                    image: "https://rukminim2.flixcart.com/image/416/416/ktuewsw0/cufflink-tie-pin/s/t/h/self-silk-necktie-gift-set-with-pocket-square-cufflinks-brooch-original-imag73kvgt2hefgp.jpeg",
+                    description: "Silk tie with a subtle pattern, perfect for business.",
+                    cost: "$25"
                 }
             ]
         },
         {
-            category: "Insect Repellent Plants",
-            plants: [
+            category: "Sportswear",
+            items: [
                 {
-                    name: "oregano",
-                    image: "https://cdn.pixabay.com/photo/2015/05/30/21/20/oregano-790702_1280.jpg",
-                    description: "The oregano plants contains compounds that can deter certain insects.",
-                    cost: "$10"
+                    name: "Running Shoes",
+                    image: "https://rukminim2.flixcart.com/image/832/832/xif0q/shoe/0/c/3/6-rng-854-grey-40-bruton-grey-original-imah3xh6a6ecvmng.jpeg",
+                    description: "Lightweight and durable, designed for runners.",
+                    cost: "$80"
                 },
                 {
-                    name: "Marigold",
-                    image:"https://cdn.pixabay.com/photo/2022/02/22/05/45/marigold-7028063_1280.jpg",
-                    description: "Natural insect repellent, also adds color to the garden.",
-                    cost: "$8"
+                    name: "Workout Leggings",
+                    image: "https://image.hm.com/assets/hm/42/9b/429b2fff84bc208e35862b20f05cd351913dfe82.jpg",
+                    description: "Flexible and breathable leggings for high-intensity workouts.",
+                    cost: "$30"
                 },
                 {
-                    name: "Geraniums",
-                    image: "https://cdn.pixabay.com/photo/2012/04/26/21/51/flowerpot-43270_1280.jpg",
-                    description: "Known for their insect-repelling properties while adding a pleasant scent.",
-                    cost: "$20"
-                },
-                {
-                    name: "Basil",
-                    image: "https://cdn.pixabay.com/photo/2016/07/24/20/48/tulsi-1539181_1280.jpg",
-                    description: "Repels flies and mosquitoes, also used in cooking.",
-                    cost: "$9"
-                },
-                {
-                    name: "Lavender",
-                    image: "https://images.unsplash.com/photo-1611909023032-2d6b3134ecba?q=80&w=1074&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-                    description: "Calming scent, used in aromatherapy.",
-                    cost: "$20"
-                },
-                {
-                    name: "Catnip",
-                    image: "https://cdn.pixabay.com/photo/2015/07/02/21/55/cat-829681_1280.jpg",
-                    description: "Repels mosquitoes and attracts cats.",
-                    cost: "$13"
-                }
-            ]
-        },
-        {
-            category: "Medicinal Plants",
-            plants: [
-                {
-                    name: "Aloe Vera",
-                    image: "https://cdn.pixabay.com/photo/2018/04/02/07/42/leaf-3283175_1280.jpg",
-                    description: "Soothing gel used for skin ailments.",
-                    cost: "$14"
-                },
-                {
-                    name: "Echinacea",
-                    image: "https://cdn.pixabay.com/photo/2014/12/05/03/53/echinacea-557477_1280.jpg",
-                    description: "Boosts immune system, helps fight colds.",
-                    cost: "$16"
-                },
-                {
-                    name: "Peppermint",
-                    image: "https://cdn.pixabay.com/photo/2017/07/12/12/23/peppermint-2496773_1280.jpg",
-                    description: "Relieves digestive issues and headaches.",
-                    cost: "$13"
-                },
-                {
-                    name: "Lemon Balm",
-                    image: "https://cdn.pixabay.com/photo/2019/09/16/07/41/balm-4480134_1280.jpg",
-                    description: "Calms nerves and promotes relaxation.",
-                    cost: "$14"
-                },
-                {
-                    name: "Chamomile",
-                    image: "https://cdn.pixabay.com/photo/2016/08/19/19/48/flowers-1606041_1280.jpg",
-                    description: "Soothes anxiety and promotes sleep.",
-                    cost: "$15"
-                },
-                {
-                    name: "Calendula",
-                    image: "https://cdn.pixabay.com/photo/2019/07/15/18/28/flowers-4340127_1280.jpg",
-                    description: "Heals wounds and soothes skin irritations.",
-                    cost: "$12"
-                }
-            ]
-        },
-        {
-            category: "Low Maintenance Plants",
-            plants: [
-                {
-                    name: "ZZ Plant",
-                    image: "https://images.unsplash.com/photo-1632207691143-643e2a9a9361?q=80&w=464&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-                    description: "Thrives in low light and requires minimal watering.",
+                    name: "Sports Bra",
+                    image: "https://image.hm.com/assets/hm/f5/9a/f59ad73b8a05c220fb0d0dbd3837586b1441d067.jpg",
+                    description: "Supportive and comfortable sports bra for activewear.",
                     cost: "$25"
                 },
                 {
-                    name: "Pothos",
-                    image: "https://cdn.pixabay.com/photo/2018/11/15/10/32/plants-3816945_1280.jpg",
-                    description: "Tolerates neglect and can grow in various conditions.",
-                    cost: "$10"
+                    name: "Athletic Jacket",
+                    image: "https://rukminim2.flixcart.com/image/832/832/xif0q/jacket/k/r/g/l-no-ntf700e-lripsome-original-imah374fxyt8exwy.jpeg",
+                    description: "Lightweight and water-resistant, ideal for outdoor activities.",
+                    cost: "$55"
+                }
+            ]
+        },
+        {
+            category: "Winter Wear",
+            items: [
+                {
+                    name: "Puffer Jacket",
+                    image: "https://rukminim2.flixcart.com/image/832/832/xif0q/jacket/2/d/e/m-no-puff900e-lripsome-original-imah49y3khdt5xjj.jpeg",
+                    description: "Insulated jacket for ultimate warmth during winter.",
+                    cost: "$100"
                 },
                 {
-                    name: "Snake Plant",
-                    image: "https://cdn.pixabay.com/photo/2021/01/22/06/04/snake-plant-5939187_1280.jpg",
-                    description: "Needs infrequent watering and is resilient to most pests.",
-                    cost: "$15"
-                },
-                {
-                    name: "Cast Iron Plant",
-                    image: "https://cdn.pixabay.com/photo/2017/02/16/18/04/cast-iron-plant-2072008_1280.jpg",
-                    description: "Hardy plant that tolerates low light and neglect.",
+                    name: "Wool Scarf",
+                    image: "https://rukminim2.flixcart.com/image/416/416/xif0q/scarf/c/8/g/free-black-side-line-muffler-al-alexvyan-original-imagkvaymcqh45su.jpeg",
+                    description: "Cozy wool scarf, perfect for chilly days.",
                     cost: "$20"
                 },
                 {
-                    name: "Succulents",
-                    image: "https://cdn.pixabay.com/photo/2016/11/21/16/05/cacti-1846147_1280.jpg",
-                    description: "Drought-tolerant plants with unique shapes and colors.",
-                    cost: "$18"
+                    name: "Beanie Hat",
+                    image: "https://rukminim2.flixcart.com/image/832/832/kwtkxow0/cap/n/x/c/free-fs48-beanie-hat-grey-firmed-string-original-imag9e88j7hg6bem.jpeg",
+                    description: "Warm and stylish beanie to keep you warm.",
+                    cost: "$15"
                 },
                 {
-                    name: "Aglaonema",
-                    image: "https://cdn.pixabay.com/photo/2014/10/10/04/27/aglaonema-482915_1280.jpg",
-                    description: "Requires minimal care and adds color to indoor spaces.",
-                    cost: "$22"
+                    name: "Leather Gloves",
+                    image: "https://rukminim2.flixcart.com/image/832/832/xif0q/glove/t/q/n/free-men-black-zigzag-winter-gloves-a-alexvyan-original-imah4fchsxu4g4kw.jpeg",
+                    description: "Premium leather gloves with a soft lining.",
+                    cost: "$30"
                 }
             ]
         }
     ];
    const styleObj={
-    backgroundColor: '#4CAF50',
+    backgroundColor: '#d2b48c',
     color: '#fff!important',
     padding: '15px',
     display: 'flex',
@@ -232,47 +148,102 @@ function ProductList() {
     fontSize: '30px',
     textDecoration: 'none',
    }
+   const styleA1={
+    color: '#556B2F',
+    fontSize: '30px',
+    textDecoration: 'none',
+   }
    const handleCartClick = (e) => {
     e.preventDefault();
     setShowCart(true); // Set showCart to true when cart icon is clicked
 };
-const handlePlantsClick = (e) => {
-    e.preventDefault();
-    setShowPlants(true); // Set showAboutUs to true when "About Us" link is clicked
-    setShowCart(false); // Hide the cart when navigating to About Us
-};
+    const handleWardrobeClick = (e) => {
+        e.preventDefault();
+        setShowClothes(true); // Set showAboutUs to true when "About Us" link is clicked
+        setShowCart(false); // Hide the cart when navigating to About Us
+    };
 
    const handleContinueShopping = (e) => {
     e.preventDefault();
     setShowCart(false);
   };
+  const handleAddToCart = (product) => {
+    dispatch(addItem(product));
+    setAddedToCart((prevState) => ({
+        ...prevState,
+        [product.name]: true,
+   }));
+   const calculateTotalQuantity = () => {
+        return cartItems ? cartItems.reduce((total, item) => total + item.quantity, 0) : 0;
+    };
+    const reactivateAddButton = (product) => {
+        setAddedToCart((prevState) => ({
+            ...prevState,
+            [product.name]: false, // Set the product name as key and value as false to indicate it's removed from cart
+        }));
+    }
+
+    const checkDisabled = (name) => {
+        if (name in addedToCart) {
+            if (addedToCart[name] === true) {
+                return true;
+            }
+        }
+        else {
+            return false;
+        }
+
+    };
+    const [totalQuantity, setTotalQuantity] = useState(calculateTotalQuantity());
+
+    useEffect(() => {
+        setTotalQuantity(calculateTotalQuantity());
+    }, [cartItems]);
+
+};
     return (
         <div>
              <div className="navbar" style={styleObj}>
             <div className="tag">
                <div className="luxury">
-               <img src="https://cdn.pixabay.com/photo/2020/08/05/13/12/eco-5465432_1280.png" alt="" />
+               <img src="https://img.freepik.com/free-vector/flat-design-clothing-store-logo-design_23-2149496415.jpg?t=st=1730543876~exp=1730547476~hmac=ce534e7d3703835d9821960037e5eefd109a33641a5f1aed37bfb6d9b5377c40&w=740" alt="" />
                <a href="/" style={{textDecoration:'none'}}>
-                        <div>
-                    <h3 style={{color:'white'}}>Paradise Nursery</h3>
-                    <i style={{color:'white'}}>Where Green Meets Serenity</i>
+                    <div>
+                        <h3 style={{color:'white'}}>Vision Fashion</h3>
+                        <i style={{color:'white'}}>where style meets elegance!</i>
                     </div>
                     </a>
                 </div>
               
             </div>
             <div style={styleObjUl}>
-                <div> <a href="#" onClick={(e)=>handlePlantsClick(e)} style={styleA}>Plants</a></div>
-                <div> <a href="#" onClick={(e) => handleCartClick(e)} style={styleA}><h1 className='cart'><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" id="IconChangeColor" height="68" width="68"><rect width="156" height="156" fill="none"></rect><circle cx="80" cy="216" r="12"></circle><circle cx="184" cy="216" r="12"></circle><path d="M42.3,72H221.7l-26.4,92.4A15.9,15.9,0,0,1,179.9,176H84.1a15.9,15.9,0,0,1-15.4-11.6L32.5,37.8A8,8,0,0,0,24.8,32H8" fill="none" stroke="#faf9f9" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" id="mainIconPathAttribute"></path></svg></h1></a></div>
+                <div> <a href="#" onClick={(e)=>handleWardrobeClick(e)} style={styleA}>Wardrobe</a></div>
+                <div> <a href="#" onClick={(e) => handleCartClick(e)} style={styleA1}><h1 className='cart'><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" id="IconChangeColor" height="68" width="68"><rect width="156" height="156" fill="none"></rect><circle cx="80" cy="216" r="12"></circle><circle cx="184" cy="216" r="12"></circle><path d="M42.3,72H221.7l-26.4,92.4A15.9,15.9,0,0,1,179.9,176H84.1a15.9,15.9,0,0,1-15.4-11.6L32.5,37.8A8,8,0,0,0,24.8,32H8" fill="none" stroke="#faf9f9" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" id="mainIconPathAttribute"></path></svg></h1></a></div>
             </div>
         </div>
         {!showCart? (
         <div className="product-grid">
-
-
-        </div>
+        {clothingArray.map((category, index) => (
+            <div key={index}>
+                <h1>{category.category}</h1>
+                <div className="product-list">
+                    {category.items.map((item) => (
+                        <div className="product-card" key={item.name}>
+                        <img className="product-image" src={item.image} alt={item.name} onError={(e) => { e.target.src = 'fallback-image.jpg'; }} />
+                        <div className="product-title">{item.name}</div>
+                        <div className="product-description">{item.description}</div>
+                        <div className="product-price">{item.cost}</div>
+                        <button className="product-button" onClick={() => handleAddToCart(item)} disabled={checkDisabled(item.name)}>{checkDisabled(item.name)?"Added":"Add"} to Cart</button>
+                    </div>
+                    ))}
+                </div>
+            </div>
+        ))}
+    </div>
  ) :  (
-    <CartItem onContinueShopping={handleContinueShopping}/>
+        <CartItem addedToCart={addedToCart}
+        reactivateAddButton={reactivateAddButton}
+        onContinueShopping={handleContinueShopping} />
 )}
     </div>
     );
